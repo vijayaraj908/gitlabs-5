@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Server Monitoring Dashboard</h1>
+    <p>CPU Usage: <span id="cpu">--</span>%</p>
+    <p>Memory Usage: <span id="mem">--</span>%</p>
+
+    <script>
+        function updateStats() {
+            fetch('/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cpu').innerText = data.cpu;
+                    document.getElementById('mem').innerText = data.memory;
+                });
+        }
+        // Update stats every 5 seconds
+        setInterval(updateStats, 5000);
+    </script>
+</body>
+</html>
