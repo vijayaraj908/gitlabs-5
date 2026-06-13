@@ -1,18 +1,23 @@
 pipeline {
     agent any
-    stages {
-        stage('Install Dependencies') {
-            steps {
-                // Ensure pip3 is installed on your EC2 instance
-                sh 'pip3 install -r requirements.txt'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                // This restarts the systemd service we configured
-                sh 'sudo systemctl restart flask_app_service'
-            }
-        }
+    stage('Install Dependencies') {
+    steps {
+        sh '''
+        # Create the virtual environment if it doesn't exist
+        if [ ! -d "venv" ]; then
+            python3 -m venv venv
+        fi
+        # Install dependencies inside the virtual environment
+        ./venv/bin/pip install -r requirements.txt
+        '''
+    }
+}
+stage('Deploy') {
+    steps {
+        // IMPORTANT: Ensure your systemd service uses the venv's python path
+        sh 'sudo systemctl restart flask_app_service'
+    }
+}
     }
     post {
         success {
