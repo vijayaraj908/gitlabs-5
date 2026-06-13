@@ -1,23 +1,23 @@
 pipeline {
     agent any
-    stage('Install Dependencies') {
-    steps {
-        sh '''
-        # Create the virtual environment if it doesn't exist
-        if [ ! -d "venv" ]; then
-            python3 -m venv venv
-        fi
-        # Install dependencies inside the virtual environment
-        ./venv/bin/pip install -r requirements.txt
-        '''
-    }
-}
-stage('Deploy') {
-    steps {
-        // IMPORTANT: Ensure your systemd service uses the venv's python path
-        sh 'sudo systemctl restart flask_app_service'
-    }
-}
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                // Ensure venv is created and dependencies installed
+                sh '''
+                if [ ! -d "venv" ]; then
+                    python3 -m venv venv
+                fi
+                ./venv/bin/pip install -r requirements.txt
+                '''
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Restarting the service
+                sh 'sudo systemctl restart flask_app_service'
+            }
+        }
     }
     post {
         success {
