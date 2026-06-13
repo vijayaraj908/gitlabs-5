@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Server Monitoring Dashboard</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .stat-box { font-size: 24px; margin: 20px; }
+    </style>
+</head>
 <body>
     <h1>Server Monitoring Dashboard</h1>
-    <p>CPU Usage: <span id="cpu">--</span>%</p>
-    <p>Memory Usage: <span id="mem">--</span>%</p>
+    <div class="stat-box">CPU Usage: <span id="cpu">--</span>%</div>
+    <div class="stat-box">Memory Usage: <span id="memory">--</span>%</div>
 
     <script>
         function updateStats() {
@@ -11,11 +18,11 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('cpu').innerText = data.cpu;
-                    document.getElementById('mem').innerText = data.memory;
+                    document.getElementById('memory').innerText = data.memory;
                 });
         }
-        // Update stats every 5 seconds
-        setInterval(updateStats, 5000);
+        setInterval(updateStats, 3000);
+        updateStats();
     </script>
 </body>
 </html>
