@@ -14,7 +14,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                // Restarting the service
+                echo 'Copying updated files to production directory...'
+                // CRITICAL STEP: Copy the updated index.html to your app directory
+                sh 'cp index.html /home/ubuntu/app/index.html'
+                
+                // Restarting the service to apply changes
+                echo 'Restarting Flask service...'
                 sh 'sudo systemctl restart flask_app_service'
             }
         }
@@ -23,7 +28,7 @@ pipeline {
         success {
             mail to: 'vijayaraj.innovate@gmail.com', 
                  subject: "SUCCESS: ${env.JOB_NAME} Build #${env.BUILD_NUMBER}", 
-                 body: "The deployment was successful!"
+                 body: "The deployment was successful! The new dashboard is now live."
         }
         failure {
             mail to: 'vijayaraj.innovate@gmail.com', 
