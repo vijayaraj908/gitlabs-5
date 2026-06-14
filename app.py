@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='.')
 def home():
     return render_template('index.html')
 
-@api.route('/api/stats')
+@app.route('/api/stats')
 def stats():
     cpu = psutil.cpu_percent(interval=1)
     memory = psutil.virtual_memory().percent
