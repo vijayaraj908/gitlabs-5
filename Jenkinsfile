@@ -17,6 +17,7 @@ pipeline {
                 echo 'Copying updated files to production directory...'
                 // CRITICAL STEP: Copy the updated index.html to your app directory
                 sh 'cp index.html /home/ubuntu/app/index.html'
+                sh 'cp app.py /home/ubuntu/app/app.py'
                 
                 // Restarting the service to apply changes
                 echo 'Restarting Flask service...'
