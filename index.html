@@ -1,16 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Server Monitoring Dashboard</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-        .stat-box { font-size: 24px; margin: 20px; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Server Monitoring Dashboard</h1>
-    <div class="stat-box">CPU Usage: <span id="cpu">--</span>%</div>
-    <div class="stat-box">Memory Usage: <span id="memory">--</span>%</div>
+    
+    <div class="dashboard">
+        <div class="card">
+            <h2>CPU Usage</h2>
+            <div class="stat-box"><span id="cpu">--</span>%</div>
+        </div>
+        <div class="card">
+            <h2>Memory Usage</h2>
+            <div class="stat-box"><span id="memory">--</span>%</div>
+        </div>
+    </div>
 
     <script>
         function updateStats() {
@@ -19,7 +26,8 @@
                 .then(data => {
                     document.getElementById('cpu').innerText = data.cpu;
                     document.getElementById('memory').innerText = data.memory;
-                });
+                })
+                .catch(err => console.error('Error fetching stats:', err));
         }
         setInterval(updateStats, 3000);
         updateStats();
